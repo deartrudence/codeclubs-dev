@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Teachers Learning Code</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <!-- Facebook OG -->
+  <meta property="og:title" content="Teachers Learning Code" />
+  <meta property="og:site_name" content="Teachers Learning Code"/>
+  <meta property="og:url" content="http://teacherslearningcode.com" />
+  <meta property="og:description" content="Teachers Learning Code has been designed for primary school teachers with little to no coding experience to be able to teach coding fundamentals to their students. We'll walk teachers through a how-to guide and lesson planning tool to help them teach kids to code."/>
+  <meta property="og:image" content="http://ladieslearningcode.com/downloads/banners/tlc-fb-card.jpg" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:title" content="Teachers Learning Code">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@learningcode">
+  <meta name="twitter:creator" content="@learningcode">
+  <meta name="twitter:description" content="Teachers Learning Code has been designed for primary school teachers with little to no coding experience to be able to teach coding fundamentals to their students. We'll walk teachers through a how-to guide and lesson planning tool to help them teach kids to code.">
+  <meta name="twitter:image" content="http://ladieslearningcode.com/downloads/banners/tlc-twitter-card.jpg">
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <link href='https://fonts.googleapis.com/css?family=Quicksand:400,700|Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <%= favicon_link_tag 'tlc-favicon.png' %>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-86161427-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag "autocomplete-rails.js" %>
+  <!-- Latest compiled and minified CSS -->
+
+  
+  <!-- Optional theme -->
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+ <!--  <link rel="stylesheet" href="http://localhost:8000/styleguide/assets/styles/styleguide.css"> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<% if alert.present? %>
+  <p class="alert"><%= alert %></p>
+<% end %>
+
+<nav class="nav--main">
+  <div class="wrapper">
+    <span class="logo">
+      <%= link_to lessons_path do%>
+        <%= image_tag 'tlc-oneline-white.svg'%>
+        <!-- <span class="font-quicksand">code:clubs</span> -->
+      <% end %>
+    </span>
+    <a class="nav--hamburger" id="nav-hamburger"><span></span></a>
+    <span class="nav--links">
+      <%= link_to 'About', about_path %>
+      <% if user_signed_in? %>
+        <% if current_user.profile.present? %>
+          <%= image_tag current_user.profile.avatar.url ? current_user.profile.avatar.url(:thumbnail) : '' %>
+          <%= link_to 'My Profile', profile_path(current_user.profile) %>
+        <% else %>
+          <%= link_to 'Create Profile', new_profile_path%>
+        <% end %>
+        <% if current_user.admin? %>
+          <%= link_to 'Admin', admin_path%>
+        <% end %>
+        <%= link_to 'Logout',  destroy_user_session_path, method: :delete %>
+      <% else %>
+        <%= link_to 'Sign In', new_user_session_path, method: :get%>
+      <% end %>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdxdcAx7qCrrpuT9oZ8exKNwxc2DUst6Ubh9sDNHaSEVEX8Lw/viewform?c=0&w=1" target="_blank" class="button button--tertiary as--request-button">Request Teacher Workshop</a>
+    </span>
+  </div>
+</nav>
+
+<div class="container-codeclubs">
+  <%= yield %>
+</div>
+<footer class="nav--footer">
+  <div class="wrapper wrapper--flex">
+    <ul class="small-caps main">
+        <li><h3>Contact Us</h3></li>
+  			<li><a href="http://twitter.com/learningcode" target="_blank">twitter.com/learningcode</a></li>
+  			<li><a href="https://www.facebook.com/ladieslearningcode" target="_blank">fb.com/ladieslearningcode</a></li>
+  			<li><a href="https://www.instagram.com/learningcode/">instagram.com/learningcode</a></li>
+  			<li><a href="mailto:carolyn@ladieslearningcode.com">carolyn@ladieslearningcode.com</a></li>
+  	</ul>
+    <ul class="small-caps main">
+      <li><h3>Support Us</h3></li>
+  		<li><a href="http://ladieslearningcode.myshopify.com/" target="_blank">Shop</a></li>
+  		<li><a href="http://ladieslearningcode.com/about/#sponsors">Sponsors</a></li>
+  		<li>
+  			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+  				<input type="hidden" name="cmd" value="_s-xclick">
+  				<input type="hidden" name="hosted_button_id" value="36LEPAUDSAMJS">
+  				<input class="button-link" type="submit" value="Donate Now">
+  			</form>
+  		</li>
+  		<li><a href="http://ladieslearningcode.com/get-involved/">Get Involved</a></li>
+  		<li><a href="http://jobs.ladieslearningcode.com/" target="_blank">Job Board</a></li>
+  		<li><a href="http://ladieslearningcode.com/about#press">Press</a></li>
+  	</ul>
+    <div class="email-form">
+      <h3>Join Our Mailing List</h3>
+      <p class="small">SIGN UP NOW TO STAY IN THE LOOP</p>
+      <%= form_for(@mailing_list) do |f| %>
+      <%= f.text_field :email,type: 'email', placeholder: 'enter email here' %>
+      <%= f.submit 'subscribe', class: 'button button--tertiary font-quicksand' %>
+      <% end %>
+    </div>
+  </div>
+</footer>
+<footer class="nav--sponsor">
+  <div class="wrapper">
+    <div class="as--creds">
+      <p>Development by <a href="http://upatfive.ca" target="_blank">Up at Five</a></p>
+      <p>Design by <a href="http://natcooper.com" target="_blank">Nat Cooper</a></p>
+      <p>&copy; <a href="http://ladieslearningcode.com" target="_blank">Ladies Learning Code</a></p>
+    </div>
+    <div class="as--hashtag"><%= image_tag 'tlc-hashtag.svg'%></div>
+    <div>
+      <p>in partnership with:</p><%= image_tag 'scotiabank-logo-white.svg'%>
+    </div>
+  </div>
+</footer>
+<script>
+  $(document).ready(function(){
+    setTimeout(function(){
+      $('#notice').remove();
+      $('.alert').remove()
+    }, 1500);
+    $('#nav-hamburger').on('click', function(){
+      var width = $(window).innerWidth()
+      var wrapper = $('.wrapper').width()
+      var left = (width - wrapper) / 2
+      if(left == 12 ){
+        $('.nav--links').css({'width': width + 'px'});
+      }else{
+        $('.nav--links').css({'width': width + 'px', 'left': '-'+ left + 'px'});
+      }
+      console.log(width)
+      $('.nav--links').slideToggle(500)
+      $(this).toggleClass('active')
+    })
+  })
+</script>
+</body>
+</html>

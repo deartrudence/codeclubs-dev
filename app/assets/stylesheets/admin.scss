@@ -1,0 +1,57 @@
+// Place all the styles related to the Admin controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+ul.tabs li{
+  background: none;
+  color: #222;
+  display: inline-block;
+  padding: 10px 15px;
+  cursor: pointer;
+  &:hover {
+    background: #FFCE06;
+  }
+}
+
+
+ul.tabs li.current{
+  background: #FFCE06;
+  color: #222;
+  &:hover {
+    background: #000;
+    color: #fff;
+  }
+}
+
+
+.tab-content{
+  display: none;
+  background: white;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.tab-content.current{
+  display: inherit;
+}
+
+hr {
+  color: white;
+}
+
+.as--lessons-admin a.as--lesson-delete {
+  margin-left: 10px;
+}
+.as--workshop-delete {
+  float: right;
+}
+
+form.new_workshop {
+  max-width: 350px;
+}
+.display-none {
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  visibility: hidden;
+}
+

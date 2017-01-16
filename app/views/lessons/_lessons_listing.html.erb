@@ -1,0 +1,81 @@
+<% if @lessons.present? %>
+  <% @lessons.each do |lesson| %>
+    <div class="lesson col--two lesson--level-<%= lesson.level %>">
+      <div class="lesson--bar">
+        <% lesson.grade_list.each do |grade| %>
+        <span>Grade :  <%= grade %></span>
+        <% end %>
+      </div>
+      <% if lesson.level == 2 %>
+        <div class="lesson--title" style="background-image: linear-gradient(to right, rgba(68, 141, 203, 0.9) 0%, rgba(68, 141, 203, 0.6) 59%, rgba(68, 141, 203, 0.5) 100%), url(<%= lesson.feature_image.url %>)">
+      <% elsif lesson.level == 3 %>
+      <div class="lesson--title" style="background-image: linear-gradient(to right, rgba(9, 83, 163, 0.9) 0%, rgba(9, 83, 163, 0.6) 59%, rgba(9, 83, 163, 0.5) 100%), url(<%= lesson.feature_image.url %>)">
+      <% elsif lesson.level == 4 %>
+        <div class="lesson--title" style="background-image: linear-gradient(to right, rgba(26, 57, 103, 0.9) 0%, rgba(26, 57, 103, 0.6) 59%, rgba(26, 57, 103, 0.5) 100%), url(<%= lesson.feature_image.url %>)">
+      <% else %>
+        <div class="lesson--title" style="background-image: linear-gradient(to right, rgba(94, 134, 155, 0.95) 0%, rgba(94, 134, 155, 0.65) 59%, rgba(94, 134, 155, 0.55) 100%), url(<%= lesson.feature_image.url %>)">
+      <% end %>
+        <span>
+          <p>Time: <%= lesson.duration_in_minutes %></p>
+          <p>Level: <%= lesson.level%></p>
+        </span>
+        <h2><%= lesson.title %></h2>
+      </div>
+
+      <div class="lesson--short-description">
+        <p><%= lesson.short_description %></p>
+        <%= link_to 'Learn More', lesson, class: 'button button--primary' %>
+
+        <span class="lesson--likes">
+
+        <%= link_to like_lesson_path(lesson), "data-liked" => lesson.liked_by_user(current_user), class: "likes", remote: true,  method: :get, data: { type: :json } do %>
+          ♡
+          <span class="likes-count"><%= lesson.get_upvotes.size %></span>
+        <% end %>
+        </span>
+      </div>
+    </div>
+
+  <% end %>
+<% else %>
+  <p>No lessons match this search parameter.</p>
+<% end %>
+
+
+<script>
+  function updateVotable(){
+    $('.likes').each(function(i, lesson){
+      var status = $(lesson).data('liked');
+      var url = $(lesson).attr('href')
+      var href = url.split('/')
+      href.pop()
+      var url_start = href.join('/')
+      if(status == true){
+        console.log(i + 'true')
+        $(lesson).attr('href', url_start + '/dislike')
+      }else if(status == false){
+        $(lesson).attr('href', url_start + '/like')
+        console.log(i + 'false')
+      }
+    })
+  }
+  $(document).ready(function(){
+    $('.likes').on('click', function(e){
+      e.preventDefault()
+
+    })
+    $('.likes').on('ajax:success', function(e, data, status, xhr){
+      console.log(data.count)
+      var count = data.count
+      var liked = $(this).data('liked')
+      $(this).find('.likes-count').html(count)
+      if(liked == true){
+        $(this).data('liked', false)
+      }else if(liked == false){
+        $(this).data('liked', true)
+      }
+      updateVotable();
+    });
+    updateVotable();
+  });
+</script>

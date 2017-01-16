@@ -1,0 +1,6 @@
+<ul class="main">
+  <% @users.find_each do |user| %>
+  <li><%= link_to user.name, user %></li>
+  <hr>
+  <% end %>
+</ul>

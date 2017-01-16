@@ -1,0 +1,2669 @@
+DEPRECATION WARNING: [Devise] config.email_regexp will have a new default on Devise 4.1
+To keep the current behavior please set in your config/initializers/devise.rb the following:
+
+  Devise.setup do |config|
+    config.email_regexp = /\A[^@\s]+@([^@\s]+\.)+[^@\W]+\z/
+  end
+
+If you want to use the new default:
+
+  Devise.setup do |config|
+    config.email_regexp = /\A[^@\s]+@[^@\s]+\z/
+  end
+. (called from <top (required)> at /Users/jordandeutsch/Documents/UA5/apps/codeclubs/config/initializers/devise.rb:3)
+  [1m[36m (1.4ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (0.8ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+Migrating to DeviseCreateUsers (20160413142437)
+  [1m[36m (0.3ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar DEFAULT '' NOT NULL, "encrypted_password" varchar DEFAULT '' NOT NULL, "reset_password_token" varchar, "reset_password_sent_at" datetime, "remember_created_at" datetime, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" datetime, "last_sign_in_at" datetime, "current_sign_in_ip" varchar, "last_sign_in_ip" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.1ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_reset_password_token" ON "users" ("reset_password_token")[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160413142437"]]
+  [1m[36m (1.2ms)[0m  [1mcommit transaction[0m
+Migrating to CreateProfiles (20160413143255)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE TABLE "profiles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "first_name" varchar, "last_name" varchar, "school" varchar, "role" varchar, "grade" varchar, "mailing_list" boolean, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160413143255"]]
+  [1m[36m (1.0ms)[0m  [1mcommit transaction[0m
+Migrating to CreateLessons (20160413144937)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE TABLE "lessons" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "duration_in_seconds" integer, "level" integer, "description" text, "curriculum_concepts" text, "prep" text, "programming_concepts" text, "content" text, "extensions" text, "answers" text, "video_link" varchar, "profile_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_lessons_on_profile_id" ON "lessons" ("profile_id")
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160413144937"]]
+  [1m[35m (1.0ms)[0m  commit transaction
+Migrating to AddUserToProfile (20160413145723)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.6ms)[0m  ALTER TABLE "profiles" ADD "user_id" integer
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_profiles_on_user_id" ON "profiles" ("user_id")[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160413145723"]]
+  [1m[36m (1.2ms)[0m  [1mcommit transaction[0m
+Migrating to AddAvatarToProfile (20160413164024)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "profiles" ADD "avatar_file_name" varchar[0m
+  [1m[35m (0.1ms)[0m  ALTER TABLE "profiles" ADD "avatar_content_type" varchar
+  [1m[36m (0.1ms)[0m  [1mALTER TABLE "profiles" ADD "avatar_file_size" integer[0m
+  [1m[35m (0.1ms)[0m  ALTER TABLE "profiles" ADD "avatar_updated_at" datetime
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160413164024"]]
+  [1m[35m (0.7ms)[0m  commit transaction
+Migrating to AddFeatureImageToLesson (20160413173221)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "lessons" ADD "feature_image_file_name" varchar
+  [1m[36m (0.1ms)[0m  [1mALTER TABLE "lessons" ADD "feature_image_content_type" varchar[0m
+  [1m[35m (0.1ms)[0m  ALTER TABLE "lessons" ADD "feature_image_file_size" integer
+  [1m[36m (0.1ms)[0m  [1mALTER TABLE "lessons" ADD "feature_image_updated_at" datetime[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160413173221"]]
+  [1m[36m (0.7ms)[0m  [1mcommit transaction[0m
+Migrating to AddFileUploadToLesson (20160413174336)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "lessons" ADD "file_upload_file_name" varchar[0m
+  [1m[35m (0.2ms)[0m  ALTER TABLE "lessons" ADD "file_upload_content_type" varchar
+  [1m[36m (0.2ms)[0m  [1mALTER TABLE "lessons" ADD "file_upload_file_size" integer[0m
+  [1m[35m (0.1ms)[0m  ALTER TABLE "lessons" ADD "file_upload_updated_at" datetime
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160413174336"]]
+  [1m[35m (0.6ms)[0m  commit transaction
+Migrating to ActsAsVotableMigration (20160413180128)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+DEPRECATION WARNING: `#timestamps` was called without specifying an option for `null`. In Rails 5, this behavior will change to `null: false`. You should manually specify `null: true` to prevent the behavior of your existing migrations from changing. (called from block in up at /Users/jordandeutsch/Documents/UA5/apps/codeclubs/db/migrate/20160413180128_acts_as_votable_migration.rb:12)
+  [1m[35m (0.3ms)[0m  CREATE TABLE "votes" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "votable_id" integer, "votable_type" varchar, "voter_id" integer, "voter_type" varchar, "vote_flag" boolean, "vote_scope" varchar, "vote_weight" integer, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_votes_on_voter_id_and_voter_type_and_vote_scope" ON "votes" ("voter_id", "voter_type", "vote_scope")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_votes_on_voter_id_and_voter_type_and_vote_scope' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_votes_on_voter_id_and_voter_type_and_vote_scope' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_votes_on_votable_id_and_votable_type_and_vote_scope" ON "votes" ("votable_id", "votable_type", "vote_scope")[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160413180128"]]
+  [1m[36m (1.1ms)[0m  [1mcommit transaction[0m
+Migrating to ActsAsTaggableOnMigration (20160413184650)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE TABLE "tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar) [0m
+  [1m[35m (0.1ms)[0m  CREATE TABLE "taggings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer, "taggable_id" integer, "taggable_type" varchar, "tagger_id" integer, "tagger_type" varchar, "context" varchar(128), "created_at" datetime) 
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_taggings_on_tag_id" ON "taggings" ("tag_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_taggings_on_tag_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_taggings_on_tag_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_taggings_on_taggable_id_and_taggable_type_and_context" ON "taggings" ("taggable_id", "taggable_type", "context")[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160413184650"]]
+  [1m[36m (1.0ms)[0m  [1mcommit transaction[0m
+Migrating to AddMissingUniqueIndices (20160413184651)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mCREATE UNIQUE INDEX "index_tags_on_name" ON "tags" ("name")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_taggings_on_taggable_id_and_taggable_type_and_context' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_taggings_on_taggable_id_and_taggable_type_and_context' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_taggings_on_tag_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_taggings_on_tag_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  DROP INDEX "index_taggings_on_tag_id"
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_taggings_on_taggable_id_and_taggable_type_and_context' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_taggings_on_taggable_id_and_taggable_type_and_context' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  DROP INDEX "index_taggings_on_taggable_id_and_taggable_type_and_context"
+  [1m[36m (0.2ms)[0m  [1mCREATE UNIQUE INDEX "taggings_idx" ON "taggings" ("tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type")[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160413184651"]]
+  [1m[36m (1.1ms)[0m  [1mcommit transaction[0m
+Migrating to AddTaggingsCounterCacheToTags (20160413184652)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "tags" ADD "taggings_count" integer DEFAULT 0[0m
+  [1m[35mActsAsTaggableOn::Tag Load (0.2ms)[0m  SELECT  "tags".* FROM "tags"  ORDER BY "tags"."id" ASC LIMIT 1000
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160413184652"]]
+  [1m[35m (0.8ms)[0m  commit transaction
+Migrating to AddMissingTaggableIndex (20160413184653)
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='taggings_idx' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='taggings_idx' AND type='index'
+
+  [1m[36m (0.3ms)[0m  [1mCREATE  INDEX "index_taggings_on_taggable_id_and_taggable_type_and_context" ON "taggings" ("taggable_id", "taggable_type", "context")[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160413184653"]]
+  [1m[36m (1.2ms)[0m  [1mcommit transaction[0m
+Migrating to ChangeCollationForTagNames (20160413184654)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160413184654"]]
+  [1m[35m (0.6ms)[0m  commit transaction
+Migrating to CreateBootsyImages (20160414141752)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+DEPRECATION WARNING: `#timestamps` was called without specifying an option for `null`. In Rails 5, this behavior will change to `null: false`. You should manually specify `null: true` to prevent the behavior of your existing migrations from changing. (called from block in change at /Users/jordandeutsch/Documents/UA5/apps/codeclubs/db/migrate/20160414141752_create_bootsy_images.bootsy.rb:7)
+  [1m[35m (0.4ms)[0m  CREATE TABLE "bootsy_images" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "image_file" varchar, "image_gallery_id" integer, "created_at" datetime, "updated_at" datetime) 
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160414141752"]]
+  [1m[35m (1.1ms)[0m  commit transaction
+Migrating to CreateBootsyImageGalleries (20160414141753)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+DEPRECATION WARNING: `#timestamps` was called without specifying an option for `null`. In Rails 5, this behavior will change to `null: false`. You should manually specify `null: true` to prevent the behavior of your existing migrations from changing. (called from block in change at /Users/jordandeutsch/Documents/UA5/apps/codeclubs/db/migrate/20160414141753_create_bootsy_image_galleries.bootsy.rb:6)
+  [1m[35m (0.4ms)[0m  CREATE TABLE "bootsy_image_galleries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "bootsy_resource_id" integer, "bootsy_resource_type" varchar, "created_at" datetime, "updated_at" datetime) 
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160414141753"]]
+  [1m[35m (0.9ms)[0m  commit transaction
+Migrating to AddCachedVotesToLessons (20160414143442)
+  [1m[36m (0.3ms)[0m  [1mbegin transaction[0m
+  [1m[35m (1.0ms)[0m  ALTER TABLE "lessons" ADD "cached_votes_total" integer DEFAULT 0
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "lessons" ADD "cached_votes_score" integer DEFAULT 0[0m
+  [1m[35m (0.1ms)[0m  ALTER TABLE "lessons" ADD "cached_votes_up" integer DEFAULT 0
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "lessons" ADD "cached_votes_down" integer DEFAULT 0[0m
+  [1m[35m (0.2ms)[0m  ALTER TABLE "lessons" ADD "cached_weighted_score" integer DEFAULT 0
+  [1m[36m (0.2ms)[0m  [1mALTER TABLE "lessons" ADD "cached_weighted_total" integer DEFAULT 0[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "lessons" ADD "cached_weighted_average" float DEFAULT 0.0
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m  CREATE  INDEX "index_lessons_on_cached_votes_total" ON "lessons" ("cached_votes_total")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_lessons_on_cached_votes_score" ON "lessons" ("cached_votes_score")[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_lessons_on_cached_votes_up" ON "lessons" ("cached_votes_up")[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_lessons_on_cached_votes_down" ON "lessons" ("cached_votes_down")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_lessons_on_cached_weighted_score" ON "lessons" ("cached_weighted_score")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_lessons_on_cached_weighted_total" ON "lessons" ("cached_weighted_total")[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+
+  [1m[36m (0.3ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_lessons_on_cached_weighted_average" ON "lessons" ("cached_weighted_average")[0m
+  [1m[35mLesson Load (0.1ms)[0m  SELECT  "lessons".* FROM "lessons"  ORDER BY "lessons"."id" ASC LIMIT 1000
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160414143442"]]
+  [1m[35m (1.2ms)[0m  commit transaction
+Migrating to RenameColumnDurationInSeconds (20160415152036)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  CREATE TEMPORARY TABLE "alessons" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "duration_in_minutes" integer, "level" integer, "description" text, "curriculum_concepts" text, "prep" text, "programming_concepts" text, "content" text, "extensions" text, "answers" text, "video_link" varchar, "profile_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "feature_image_file_name" varchar, "feature_image_content_type" varchar, "feature_image_file_size" integer, "feature_image_updated_at" datetime, "file_upload_file_name" varchar, "file_upload_content_type" varchar, "file_upload_file_size" integer, "file_upload_updated_at" datetime, "cached_votes_total" integer DEFAULT 0, "cached_votes_score" integer DEFAULT 0, "cached_votes_up" integer DEFAULT 0, "cached_votes_down" integer DEFAULT 0, "cached_weighted_score" integer DEFAULT 0, "cached_weighted_total" integer DEFAULT 0, "cached_weighted_average" float DEFAULT 0.0) 
+  [1m[36m (0.3ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_average' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_average' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_alessons_on_cached_weighted_average" ON "alessons" ("cached_weighted_average")[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "tindex_alessons_on_cached_weighted_total" ON "alessons" ("cached_weighted_total")
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_alessons_on_cached_weighted_score" ON "alessons" ("cached_weighted_score")[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "tindex_alessons_on_cached_votes_down" ON "alessons" ("cached_votes_down")
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_alessons_on_cached_votes_up" ON "alessons" ("cached_votes_up")[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "tindex_alessons_on_cached_votes_score" ON "alessons" ("cached_votes_score")
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_alessons_on_cached_votes_total" ON "alessons" ("cached_votes_total")[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "tindex_alessons_on_profile_id" ON "alessons" ("profile_id")
+  [1m[36m (0.1ms)[0m  [1mSELECT * FROM "lessons"[0m
+  [1m[35m (0.4ms)[0m  DROP TABLE "lessons"
+  [1m[36m (0.1ms)[0m  [1mCREATE TABLE "lessons" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "duration_in_minutes" integer, "level" integer, "description" text, "curriculum_concepts" text, "prep" text, "programming_concepts" text, "content" text, "extensions" text, "answers" text, "video_link" varchar, "profile_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "feature_image_file_name" varchar, "feature_image_content_type" varchar, "feature_image_file_size" integer, "feature_image_updated_at" datetime, "file_upload_file_name" varchar, "file_upload_content_type" varchar, "file_upload_file_size" integer, "file_upload_updated_at" datetime, "cached_votes_total" integer DEFAULT 0, "cached_votes_score" integer DEFAULT 0, "cached_votes_up" integer DEFAULT 0, "cached_votes_down" integer DEFAULT 0, "cached_weighted_score" integer DEFAULT 0, "cached_weighted_total" integer DEFAULT 0, "cached_weighted_average" float DEFAULT 0.0) [0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_votes_score' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_votes_up' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_votes_down' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_weighted_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_weighted_score' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_weighted_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_weighted_total' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_weighted_average' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_weighted_average' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_lessons_on_profile_id" ON "lessons" ("profile_id")
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_lessons_on_cached_votes_total" ON "lessons" ("cached_votes_total")
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_lessons_on_cached_votes_score" ON "lessons" ("cached_votes_score")[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.3ms)[0m  [1mCREATE  INDEX "index_lessons_on_cached_votes_up" ON "lessons" ("cached_votes_up")[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_lessons_on_cached_votes_down" ON "lessons" ("cached_votes_down")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_lessons_on_cached_weighted_score" ON "lessons" ("cached_weighted_score")
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_lessons_on_cached_weighted_total" ON "lessons" ("cached_weighted_total")[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_lessons_on_cached_weighted_average" ON "lessons" ("cached_weighted_average")[0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "alessons"
+  [1m[36m (0.1ms)[0m  [1mDROP TABLE "alessons"[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_average' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_average' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160415152036"]]
+  [1m[36m (1.3ms)[0m  [1mcommit transaction[0m
+Migrating to AddApprovedToLessons (20160415160942)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.7ms)[0m  [1mALTER TABLE "lessons" ADD "approved" boolean[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160415160942"]]
+  [1m[36m (0.6ms)[0m  [1mcommit transaction[0m
+Migrating to CreateFriendlyIdSlugs (20160418125330)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.5ms)[0m  [1mCREATE TABLE "friendly_id_slugs" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "slug" varchar NOT NULL, "sluggable_id" integer NOT NULL, "sluggable_type" varchar(50), "scope" varchar, "created_at" datetime) [0m
+  [1m[35m (0.3ms)[0m  CREATE  INDEX "index_friendly_id_slugs_on_sluggable_id" ON "friendly_id_slugs" ("sluggable_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_friendly_id_slugs_on_sluggable_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_friendly_id_slugs_on_sluggable_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_friendly_id_slugs_on_slug_and_sluggable_type" ON "friendly_id_slugs" ("slug", "sluggable_type")
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_friendly_id_slugs_on_slug_and_sluggable_type' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_friendly_id_slugs_on_slug_and_sluggable_type' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_friendly_id_slugs_on_sluggable_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_friendly_id_slugs_on_sluggable_id' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1mCREATE UNIQUE INDEX "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope" ON "friendly_id_slugs" ("slug", "sluggable_type", "scope")[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_friendly_id_slugs_on_slug_and_sluggable_type' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_friendly_id_slugs_on_slug_and_sluggable_type' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_friendly_id_slugs_on_sluggable_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_friendly_id_slugs_on_sluggable_id' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1mCREATE  INDEX "index_friendly_id_slugs_on_sluggable_type" ON "friendly_id_slugs" ("sluggable_type")[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160418125330"]]
+  [1m[36m (0.6ms)[0m  [1mcommit transaction[0m
+Migrating to AddSlugToLesson (20160418130248)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "lessons" ADD "slug" varchar[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_average' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_average' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE UNIQUE INDEX "index_lessons_on_slug" ON "lessons" ("slug")
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160418130248"]]
+  [1m[35m (1.1ms)[0m  commit transaction
+Migrating to AddSlugToProfile (20160418131448)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "profiles" ADD "slug" varchar
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_profiles_on_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_profiles_on_user_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m  CREATE UNIQUE INDEX "index_profiles_on_slug" ON "profiles" ("slug")
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160418131448"]]
+  [1m[35m (1.1ms)[0m  commit transaction
+Migrating to CreateMailingLists (20160418141141)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  CREATE TABLE "mailing_lists" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "email" varchar, "opt_in" boolean, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160418141141"]]
+  [1m[35m (0.7ms)[0m  commit transaction
+Migrating to AddDefaultToLessons (20160420135623)
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  CREATE TEMPORARY TABLE "alessons" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "duration_in_minutes" integer, "level" integer, "description" text, "curriculum_concepts" text, "prep" text, "programming_concepts" text, "content" text, "extensions" text, "answers" text, "video_link" varchar, "profile_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "feature_image_file_name" varchar, "feature_image_content_type" varchar, "feature_image_file_size" integer, "feature_image_updated_at" datetime, "file_upload_file_name" varchar, "file_upload_content_type" varchar, "file_upload_file_size" integer, "file_upload_updated_at" datetime, "cached_votes_total" integer DEFAULT 0, "cached_votes_score" integer DEFAULT 0, "cached_votes_up" integer DEFAULT 0, "cached_votes_down" integer DEFAULT 0, "cached_weighted_score" integer DEFAULT 0, "cached_weighted_total" integer DEFAULT 0, "cached_weighted_average" float DEFAULT 0.0, "approved" boolean, "slug" varchar) 
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_slug' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_slug' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_average' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_average' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE UNIQUE INDEX "tindex_alessons_on_slug" ON "alessons" ("slug")
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_alessons_on_cached_weighted_average" ON "alessons" ("cached_weighted_average")[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "tindex_alessons_on_cached_weighted_total" ON "alessons" ("cached_weighted_total")
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_alessons_on_cached_weighted_score" ON "alessons" ("cached_weighted_score")[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "tindex_alessons_on_cached_votes_down" ON "alessons" ("cached_votes_down")
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_alessons_on_cached_votes_up" ON "alessons" ("cached_votes_up")[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "tindex_alessons_on_cached_votes_score" ON "alessons" ("cached_votes_score")
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_alessons_on_cached_votes_total" ON "alessons" ("cached_votes_total")[0m
+  [1m[35m (0.2ms)[0m  CREATE  INDEX "tindex_alessons_on_profile_id" ON "alessons" ("profile_id")
+  [1m[36m (0.3ms)[0m  [1mSELECT * FROM "lessons"[0m
+  [1m[35m (0.4ms)[0m  DROP TABLE "lessons"
+  [1m[36m (0.2ms)[0m  [1mCREATE TABLE "lessons" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "duration_in_minutes" integer, "level" integer, "description" text, "curriculum_concepts" text, "prep" text, "programming_concepts" text, "content" text, "extensions" text, "answers" text, "video_link" varchar, "profile_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "feature_image_file_name" varchar, "feature_image_content_type" varchar, "feature_image_file_size" integer, "feature_image_updated_at" datetime, "file_upload_file_name" varchar, "file_upload_content_type" varchar, "file_upload_file_size" integer, "file_upload_updated_at" datetime, "cached_votes_total" integer DEFAULT 0, "cached_votes_score" integer DEFAULT 0, "cached_votes_up" integer DEFAULT 0, "cached_votes_down" integer DEFAULT 0, "cached_weighted_score" integer DEFAULT 0, "cached_weighted_total" integer DEFAULT 0, "cached_weighted_average" float DEFAULT 0.0, "approved" boolean DEFAULT 'f', "slug" varchar) [0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_votes_score' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_votes_up' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_votes_down' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_weighted_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_weighted_score' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_weighted_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_weighted_total' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_weighted_average' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_weighted_average' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_slug' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_slug' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_lessons_on_profile_id" ON "lessons" ("profile_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_lessons_on_cached_votes_total" ON "lessons" ("cached_votes_total")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_lessons_on_cached_votes_score" ON "lessons" ("cached_votes_score")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_lessons_on_cached_votes_up" ON "lessons" ("cached_votes_up")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_lessons_on_cached_votes_down" ON "lessons" ("cached_votes_down")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_lessons_on_cached_weighted_score" ON "lessons" ("cached_weighted_score")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_lessons_on_cached_weighted_total" ON "lessons" ("cached_weighted_total")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m  CREATE  INDEX "index_lessons_on_cached_weighted_average" ON "lessons" ("cached_weighted_average")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_average' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_average' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE UNIQUE INDEX "index_lessons_on_slug" ON "lessons" ("slug")[0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "alessons"
+  [1m[36m (0.2ms)[0m  [1mDROP TABLE "alessons"[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160420135623"]]
+  [1m[36m (1.1ms)[0m  [1mcommit transaction[0m
+Migrating to AddDefaultRoleToProfile (20160422161356)
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mCREATE TEMPORARY TABLE "aprofiles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "first_name" varchar, "last_name" varchar, "school" varchar, "role" varchar, "grade" varchar, "mailing_list" boolean, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "user_id" integer, "avatar_file_name" varchar, "avatar_content_type" varchar, "avatar_file_size" integer, "avatar_updated_at" datetime, "slug" varchar) [0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_profiles_on_slug' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_profiles_on_slug' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_profiles_on_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_profiles_on_user_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE UNIQUE INDEX "tindex_aprofiles_on_slug" ON "aprofiles" ("slug")
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_aprofiles_on_user_id" ON "aprofiles" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  SELECT * FROM "profiles"
+  [1m[36m (0.3ms)[0m  [1mDROP TABLE "profiles"[0m
+  [1m[35m (0.1ms)[0m  CREATE TABLE "profiles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "first_name" varchar, "last_name" varchar, "school" varchar, "role" varchar DEFAULT 'teacher', "grade" varchar, "mailing_list" boolean, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "user_id" integer, "avatar_file_name" varchar, "avatar_content_type" varchar, "avatar_file_size" integer, "avatar_updated_at" datetime, "slug" varchar) 
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_aprofiles_on_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_aprofiles_on_user_id' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_aprofiles_on_slug' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_aprofiles_on_slug' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_profiles_on_user_id" ON "profiles" ("user_id")[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_profiles_on_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_profiles_on_user_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE UNIQUE INDEX "index_profiles_on_slug" ON "profiles" ("slug")[0m
+  [1m[35m (0.0ms)[0m  SELECT * FROM "aprofiles"
+  [1m[36m (0.1ms)[0m  [1mDROP TABLE "aprofiles"[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160422161356"]]
+  [1m[36m (1.0ms)[0m  [1mcommit transaction[0m
+Migrating to AddDefaultValueToLevel (20160512141718)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.2ms)[0m  [1mCREATE TEMPORARY TABLE "alessons" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "duration_in_minutes" integer, "level" integer, "description" text, "curriculum_concepts" text, "prep" text, "programming_concepts" text, "content" text, "extensions" text, "answers" text, "video_link" varchar, "profile_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "feature_image_file_name" varchar, "feature_image_content_type" varchar, "feature_image_file_size" integer, "feature_image_updated_at" datetime, "file_upload_file_name" varchar, "file_upload_content_type" varchar, "file_upload_file_size" integer, "file_upload_updated_at" datetime, "cached_votes_total" integer DEFAULT 0, "cached_votes_score" integer DEFAULT 0, "cached_votes_up" integer DEFAULT 0, "cached_votes_down" integer DEFAULT 0, "cached_weighted_score" integer DEFAULT 0, "cached_weighted_total" integer DEFAULT 0, "cached_weighted_average" float DEFAULT 0.0, "approved" boolean DEFAULT 'f', "slug" varchar) [0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_slug' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_slug' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_average' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_average' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE UNIQUE INDEX "tindex_alessons_on_slug" ON "alessons" ("slug")[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "tindex_alessons_on_cached_weighted_average" ON "alessons" ("cached_weighted_average")
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_alessons_on_cached_weighted_total" ON "alessons" ("cached_weighted_total")[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "tindex_alessons_on_cached_weighted_score" ON "alessons" ("cached_weighted_score")
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_alessons_on_cached_votes_down" ON "alessons" ("cached_votes_down")[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "tindex_alessons_on_cached_votes_up" ON "alessons" ("cached_votes_up")
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_alessons_on_cached_votes_score" ON "alessons" ("cached_votes_score")[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "tindex_alessons_on_cached_votes_total" ON "alessons" ("cached_votes_total")
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_alessons_on_profile_id" ON "alessons" ("profile_id")[0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "lessons"
+  [1m[36m (0.4ms)[0m  [1mDROP TABLE "lessons"[0m
+  [1m[35m (0.1ms)[0m  CREATE TABLE "lessons" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "duration_in_minutes" integer, "level" integer DEFAULT 1, "description" text, "curriculum_concepts" text, "prep" text, "programming_concepts" text, "content" text, "extensions" text, "answers" text, "video_link" varchar, "profile_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "feature_image_file_name" varchar, "feature_image_content_type" varchar, "feature_image_file_size" integer, "feature_image_updated_at" datetime, "file_upload_file_name" varchar, "file_upload_content_type" varchar, "file_upload_file_size" integer, "file_upload_updated_at" datetime, "cached_votes_total" integer DEFAULT 0, "cached_votes_score" integer DEFAULT 0, "cached_votes_up" integer DEFAULT 0, "cached_votes_down" integer DEFAULT 0, "cached_weighted_score" integer DEFAULT 0, "cached_weighted_total" integer DEFAULT 0, "cached_weighted_average" float DEFAULT 0.0, "approved" boolean DEFAULT 'f', "slug" varchar) 
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_profile_id' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_votes_total' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_votes_score' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_votes_up' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_votes_down' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_weighted_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_weighted_score' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_weighted_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_weighted_total' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_cached_weighted_average' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_cached_weighted_average' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_alessons_on_slug' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_alessons_on_slug' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_lessons_on_profile_id" ON "lessons" ("profile_id")
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_lessons_on_cached_votes_total" ON "lessons" ("cached_votes_total")
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_lessons_on_cached_votes_score" ON "lessons" ("cached_votes_score")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_lessons_on_cached_votes_up" ON "lessons" ("cached_votes_up")[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_lessons_on_cached_votes_down" ON "lessons" ("cached_votes_down")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_lessons_on_cached_weighted_score" ON "lessons" ("cached_weighted_score")
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_lessons_on_cached_weighted_total" ON "lessons" ("cached_weighted_total")[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_lessons_on_cached_weighted_average" ON "lessons" ("cached_weighted_average")[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_average' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_average' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+
+  [1m[36m (0.0ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE UNIQUE INDEX "index_lessons_on_slug" ON "lessons" ("slug")
+  [1m[36m (0.1ms)[0m  [1mSELECT * FROM "alessons"[0m
+  [1m[35m (0.3ms)[0m  DROP TABLE "alessons"
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160512141718"]]
+  [1m[35m (1.0ms)[0m  commit transaction
+Migrating to AddReferencesToLessons (20160930230648)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "lessons" ADD "references" text
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160930230648"]]
+  [1m[35m (0.6ms)[0m  commit transaction
+Migrating to CreateWorkshops (20160930232034)
+  [1m[36m (0.6ms)[0m  [1mbegin transaction[0m
+  [1m[35m (2.3ms)[0m  CREATE TABLE "workshops" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "link" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160930232034"]]
+  [1m[35m (1.2ms)[0m  commit transaction
+Migrating to CreateDownloadLists (20161002192546)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  CREATE TABLE "download_lists" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "first_name" varchar, "last_name" varchar, "email" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20161002192546"]]
+  [1m[35m (1.1ms)[0m  commit transaction
+Migrating to AddNumberofStudentsandAgeRangetoProfile (20161027144910)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "profiles" ADD "number_of_students" integer
+  [1m[36m (0.2ms)[0m  [1mALTER TABLE "profiles" ADD "learner_age_range" varchar[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20161027144910"]]
+  [1m[36m (1.1ms)[0m  [1mcommit transaction[0m
+Migrating to CreateSuggestedLessons (20161027151919)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE TABLE "suggested_lessons" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "lesson_id" integer, "suggested_lesson_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_suggested_lessons_on_lesson_id" ON "suggested_lessons" ("lesson_id")
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20161027151919"]]
+  [1m[35m (0.9ms)[0m  commit transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_friendly_id_slugs_on_sluggable_type' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_friendly_id_slugs_on_sluggable_type' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_friendly_id_slugs_on_slug_and_sluggable_type' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_friendly_id_slugs_on_slug_and_sluggable_type' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_friendly_id_slugs_on_sluggable_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_friendly_id_slugs_on_sluggable_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_slug' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_slug' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_average' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_average' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_total' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_weighted_score' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_down' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_up' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_score' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_cached_votes_total' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_lessons_on_profile_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_profiles_on_slug' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_profiles_on_slug' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_profiles_on_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_profiles_on_user_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_suggested_lessons_on_lesson_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_suggested_lessons_on_lesson_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_taggings_on_taggable_id_and_taggable_type_and_context' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_taggings_on_taggable_id_and_taggable_type_and_context' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='taggings_idx' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='taggings_idx' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_tags_on_name' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_tags_on_name' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_votes_on_votable_id_and_votable_type_and_vote_scope' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_votes_on_votable_id_and_votable_type_and_vote_scope' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_votes_on_voter_id_and_voter_type_and_vote_scope' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_votes_on_voter_id_and_voter_type_and_vote_scope' AND type='index'
+
+DEPRECATION WARNING: [Devise] config.email_regexp will have a new default on Devise 4.1
+To keep the current behavior please set in your config/initializers/devise.rb the following:
+
+  Devise.setup do |config|
+    config.email_regexp = /\A[^@\s]+@([^@\s]+\.)+[^@\W]+\z/
+  end
+
+If you want to use the new default:
+
+  Devise.setup do |config|
+    config.email_regexp = /\A[^@\s]+@[^@\s]+\z/
+  end
+. (called from <top (required)> at /Users/jordandeutsch/Documents/UA5/apps/codeclubs/config/initializers/devise.rb:3)
+DEPRECATION WARNING: [Devise] config.email_regexp will have a new default on Devise 4.1
+To keep the current behavior please set in your config/initializers/devise.rb the following:
+
+  Devise.setup do |config|
+    config.email_regexp = /\A[^@\s]+@([^@\s]+\.)+[^@\W]+\z/
+  end
+
+If you want to use the new default:
+
+  Devise.setup do |config|
+    config.email_regexp = /\A[^@\s]+@[^@\s]+\z/
+  end
+. (called from <top (required)> at /Users/jordandeutsch/Documents/UA5/apps/codeclubs/config/initializers/devise.rb:3)
+
+
+Started GET "/" for ::1 at 2017-01-05 14:27:57 -0500
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by LessonsController#index as HTML
+  [1m[35mLesson Load (0.2ms)[0m  SELECT  "lessons".* FROM "lessons" WHERE "lessons"."approved" = ?  ORDER BY "lessons"."cached_votes_up" DESC LIMIT 21  [["approved", "t"]]
+  [1m[36m (0.2ms)[0m  [1mSELECT DISTINCT name FROM "taggings" LEFT OUTER JOIN "tags" ON "tags"."id" = "taggings"."tag_id" WHERE "taggings"."context" = ?[0m  [["context", "grade"]]
+  [1m[35m (0.1ms)[0m  SELECT DISTINCT name FROM "taggings" LEFT OUTER JOIN "tags" ON "tags"."id" = "taggings"."tag_id" WHERE "taggings"."context" = ?  [["context", "subject"]]
+  [1m[36m (0.1ms)[0m  [1mSELECT DISTINCT name FROM "taggings" LEFT OUTER JOIN "tags" ON "tags"."id" = "taggings"."tag_id" WHERE "taggings"."context" = ?[0m  [["context", "code_concept"]]
+  Rendered lessons/_lessons_listing.html.erb (1.9ms)
+  Rendered lessons/index.html.erb within layouts/application (39.7ms)
+  [1m[35mUser Load (0.5ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 1]]
+Completed 200 OK in 2764ms (Views: 2657.3ms | ActiveRecord: 2.3ms)
+
+
+Started GET "/assets/bootsy.self-bc5f4f8852bee8ff2f26b023fa37896e2898a552a66e15756877a0f3c4f77479.css?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery.remotipart.self-337cc0be48c9612bd2dff6eebbc740a488456bba7c0d29da6b63834752826ecd.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery_ujs.self-e87806d0cf4489aeb1bb7288016024e8de67fd18db693fe026fe3907581e53cd.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery.self-660adc51e0224b731d29f575a6f1ec167ba08ad06ed5deca4f1e8654c135bf4c.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+
+
+Started GET "/assets/jquery.iframe-transport.self-9d6de1e3d97369f20a85456477db38a3d2b674761f4a252275201ec0272793a4.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/bootsy/init.self-ca227504be9a0f07937ad0f660e84f25db9dd220c9cf7f8d32ca1cfc99386d81.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/bootsy/modal.self-3a7523398205630a8a33828fa31c209123582b359d2864fabfc3dd2dbb8339b3.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/bootsy.self-636159b35205da4142a43bc02d2849d77d3ac07a0946211585cde15a9c6ff21f.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/core.self-93be4d22eda916787802a64d8f88b52db8a9027d4ccbbc0942625324a7d12d44.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/widget.self-c1602241ddc51216b58391768667068867b8e15b9efc722befcd25771eda6819.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/position.self-e693ced4ecfa1a276f0b794f32c1d30d792764b08788bf68ecfa3b388c291333.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/menu.self-7abc1c9401509a7e4fc609b1e461be6fd17e8116e8fda19cc59d05ba79aefb68.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/accordion.self-c95f320275150a94241b004a91e21eef9c5ae9965a793cb3e2475f6078a1670d.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/autocomplete.self-3befc48aba87cead090cfd014562b2771a662ac6d2c8197b24c08b2d9f3d9f2d.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/button.self-4d4f21ba77bbf8cc08ae65e2b6329a7a1b952b32c3ba7bffca8313e7e8c93d0c.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/datepicker.self-6267be6d4d0f0e8665be3b4d6ac07f40ba23a32aff8eaa5d1bfc00f76a9eeae7.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/mouse.self-c513294e8da73f31f84ba3ef11e2a1180a47faea0eb2fea4a53fc26153dd21fd.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/draggable.self-debcca3d0d5d9afe2fe91a6fd1aebdb41ca0a55f2f6017352e6c02b6d8a6e64c.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/resizable.self-60b870565f3cd62982c1907828119bb51f42ec8228d5e23868153edc3abc685c.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/dialog.self-5a6c7980dfa3f6b74445b0f4b20eed799ee65363163500ed7f032e603d6b022d.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/bootsy/area.self-bceca654916cf15ad3a0f54b4bf7e14b84dc5b17881f1bbedaa5a6bbb768bcc3.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/droppable.self-a7a2b4c2cec8fc176f51e4e4291d92bfd3eec40b6a580b47fc54c16334d52882.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/effect-bounce.self-bfcb9288797ecd234ddeedf4fbc5b4c9de94a4e6d8d44e6faa5b5e9836fad9fd.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/effect.self-3acdb29e7da09c8f0195b994d2f04d73bfef50dc539c84fd2c835d964d33e5c1.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/effect-drop.self-294aaa72126ad9c94d6558cca792eb3716754713aca98f18a9dd7c493150ed92.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/effect-explode.self-68e74dc114a52f3f4d7033e40c39196961bdcf439652daa2e98baa115c7bb44b.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/effect-fade.self-42d542a5253e0a610717460102ee6bee339c656cc188e491d89eb0779043c963.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/effect-blind.self-ed102209d7aa0b7374f3db8478cc7dcff5f9980d3146e8bf9fbfab959c6d5d8a.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/effect-highlight.self-f922b7179ab8ccfa7865141f38865bba0a3d2bdceba7561c27ca14544dbfd996.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/effect-clip.self-7368e4597c32360b162d264ff8bbd0cf9fb1535eb9b4564e6eb7c1db3c774bf3.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/effect-scale.self-884a5abcb6d90fcd9f9a071aa8329638184df688afced1b1d3b6be6c69f4dd7f.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/effect-fold.self-ad9967f153423916300dbf1104b00f7ad7bbd6a222a0fcc1012ebe251bcb13c8.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/effect-size.self-368aecefa09656a2be5c72dc8e685b120363a3df812134cbd2dd998bafa179fd.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/effect-pulsate.self-eb107c0d136eccdfbd8a2f0f2ee71e0f6911cb300c6b63cc2fe4f6532e6a9a97.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/effect-puff.self-93415831093923a70f671d73e8d0b3d94deb37ac7472a036a4add545f565c166.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/effect-transfer.self-181245634ec522320fc1081f6dbf94fd982f34eefa03555f76817dedfcdea336.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/effect-shake.self-63bcc14897aac5b84e10690be94d64d5724f864aa14c913b4d1030c461a256ad.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/selectable.self-42e53fc2f95211314e36a8094c42560f869c207f16d68cfc206aa37201dcdc03.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/effect-slide.self-c93054a4a80d1f986760806d81ab067e4a4120bf103337e152ecc24d36e785f6.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/slider.self-8af8d2a0661743ba88b4cfb99d5c8c874cfa3fc6528ae4e9252366b388def0b7.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/progressbar.self-a259ff5a2a5e7aef0ec21bda94edd0f6bc1e9821128d901de415956edf212b0d.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/selectmenu.self-09dbcac573f0e508194bd9deff254db090889b380d030261857860309c0918e8.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/spinner.self-3c8c95a7bc9c877d0f9c16789246bbedda6b8e8fbf5927951babdab775aed02e.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/tooltip.self-38f04ac3a6c8fb2391ec6832b68845671cc9013a94371b7eb239478f4835eb73.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+
+
+Started GET "/assets/jquery-ui.self-52111578aa54225c9ebfe06f78a62771020ee548bb27d62228ee3f5e6633969d.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+Started GET "/assets/jquery-ui/tabs.self-dc07b44bf1b926c8d28ccd2658e30933881e5329348caf70cf305c3943f6bbd7.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/jquery-ui/sortable.self-df2d80a36f9dfbe0facc596ccd92af83ca50d38e4cd6a84810aaf5d40b8cd181.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/turbolinks.self-c37727e9bd6b2735da5c311aa83fead54ed0be6cc8bd9a65309e9c5abe2cbfff.js?body=1" for ::1 at 2017-01-05 14:28:00 -0500
+
+
+Started GET "/assets/bw-bg.png" for ::1 at 2017-01-05 14:28:01 -0500
+
+
+Started GET "/users/sign_in" for ::1 at 2017-01-05 14:28:05 -0500
+Processing by Devise::SessionsController#new as HTML
+  Parameters: {"authenticity_token"=>"62rxN7KyoCmf4vA45DWFWIPRyMIm/wrX0eRu0fHZZkq55l0gWB+hMeBCHJbvyF4Wddbay4XVdp6uPIQVyki1tA=="}
+  Rendered devise/shared/_links.html.erb (13.9ms)
+  Rendered devise/sessions/new.html.erb within layouts/application (65.0ms)
+Completed 200 OK in 496ms (Views: 479.7ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users/sign_up" for ::1 at 2017-01-05 14:28:09 -0500
+Processing by MyDevise::RegistrationsController#new as HTML
+  Rendered devise/shared/_links.html.erb (8.1ms)
+  Rendered devise/registrations/new.html.erb within layouts/application (25.6ms)
+Completed 200 OK in 480ms (Views: 478.9ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/users" for ::1 at 2017-01-05 14:28:20 -0500
+Processing by MyDevise::RegistrationsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"tN+I9gCMCLwstDiPNf3SwCsWeD/+/Y/VBCBgD9V3q8zmUyTh6iEJpFMU1CE+AAmO3RFqNl3X85x7+IrL7uZ4Mg==", "user"=>{"email"=>"user1@email.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}, "commit"=>"Sign up"}
+  [1m[36m (0.2ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Exists (0.4ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."email" = 'user1@email.com' LIMIT 1
+  [1m[36mSQL (1.1ms)[0m  [1mINSERT INTO "users" ("email", "encrypted_password", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["email", "user1@email.com"], ["encrypted_password", "$2a$10$/Pd1ujISr51S6pRqyvWbYerwCdFUH20zvXpAPkWdaOIKZujvPrDM6"], ["created_at", "2017-01-05 19:28:20.673292"], ["updated_at", "2017-01-05 19:28:20.673292"]]
+  [1m[35m (0.8ms)[0m  commit transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  UPDATE "users" SET "last_sign_in_at" = ?, "current_sign_in_at" = ?, "last_sign_in_ip" = ?, "current_sign_in_ip" = ?, "sign_in_count" = ?, "updated_at" = ? WHERE "users"."id" = ?  [["last_sign_in_at", "2017-01-05 19:28:20.679798"], ["current_sign_in_at", "2017-01-05 19:28:20.679798"], ["last_sign_in_ip", "::1"], ["current_sign_in_ip", "::1"], ["sign_in_count", 1], ["updated_at", "2017-01-05 19:28:20.680992"], ["id", 1]]
+  [1m[36m (0.6ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/profiles/new
+Completed 302 Found in 190ms (ActiveRecord: 3.5ms)
+
+
+Started GET "/profiles/new" for ::1 at 2017-01-05 14:28:20 -0500
+Processing by ProfilesController#new as HTML
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 1]]
+  [1m[36mProfile Load (0.2ms)[0m  [1mSELECT  "profiles".* FROM "profiles" WHERE "profiles"."user_id" = ? LIMIT 1[0m  [["user_id", 1]]
+  Rendered profiles/_form.html.erb (19.1ms)
+  Rendered profiles/new.html.erb within layouts/application (21.3ms)
+Completed 200 OK in 466ms (Views: 447.0ms | ActiveRecord: 1.0ms)
+
+
+Started POST "/profiles" for ::1 at 2017-01-05 14:28:44 -0500
+Processing by ProfilesController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"GhtbB5HliP7xG8QO0VGO3JMLzSLm6KZ0RjpmlPOLwHhIl/cQe0iJ5o67KKDarFWSZQzfK0XC2j054oxQyBoThg==", "profile"=>{"first_name"=>"User", "last_name"=>"One", "school"=>"Elmdale", "grade"=>"6", "number_of_students"=>"10", "learner_age_range"=>"10 - 12", "mailing_list"=>"0", "avatar"=>#<ActionDispatch::Http::UploadedFile:0x007fcc63e3a558 @tempfile=#<Tempfile:/var/folders/5q/wgyxkpgn079c873btlws30r80000gn/T/RackMultipart20170105-42982-17o14el.jpeg>, @original_filename="thelma-and-louise.jpeg", @content_type="image/jpeg", @headers="Content-Disposition: form-data; name=\"profile[avatar]\"; filename=\"thelma-and-louise.jpeg\"\r\nContent-Type: image/jpeg\r\n">}, "commit"=>"submit"}
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 1]]
+Command :: PATH=/usr/local/bin/:$PATH; file -b --mime '/var/folders/5q/wgyxkpgn079c873btlws30r80000gn/T/e8501262c1d4a5beb9277bdd585e9a1e20170105-42982-1swevli.jpeg'
+Command :: PATH=/usr/local/bin/:$PATH; identify -format '%wx%h,%[exif:orientation]' '/var/folders/5q/wgyxkpgn079c873btlws30r80000gn/T/e8501262c1d4a5beb9277bdd585e9a1e20170105-42982-1ppj8or.jpeg[0]' 2>/dev/null
+Command :: PATH=/usr/local/bin/:$PATH; identify -format %m '/var/folders/5q/wgyxkpgn079c873btlws30r80000gn/T/e8501262c1d4a5beb9277bdd585e9a1e20170105-42982-1ppj8or.jpeg[0]'
+Command :: PATH=/usr/local/bin/:$PATH; convert '/var/folders/5q/wgyxkpgn079c873btlws30r80000gn/T/e8501262c1d4a5beb9277bdd585e9a1e20170105-42982-1ppj8or.jpeg[0]' -auto-orient -resize "100x100^" -gravity center -crop '100x100+0+0' '/var/folders/5q/wgyxkpgn079c873btlws30r80000gn/T/ba1fe3ea2388fc0523287a9443bf6a6720170105-42982-1irrsp2'
+Command :: PATH=/usr/local/bin/:$PATH; identify -format '%wx%h,%[exif:orientation]' '/var/folders/5q/wgyxkpgn079c873btlws30r80000gn/T/e8501262c1d4a5beb9277bdd585e9a1e20170105-42982-1ppj8or.jpeg[0]' 2>/dev/null
+Command :: PATH=/usr/local/bin/:$PATH; identify -format %m '/var/folders/5q/wgyxkpgn079c873btlws30r80000gn/T/e8501262c1d4a5beb9277bdd585e9a1e20170105-42982-1ppj8or.jpeg[0]'
+Command :: PATH=/usr/local/bin/:$PATH; convert '/var/folders/5q/wgyxkpgn079c873btlws30r80000gn/T/e8501262c1d4a5beb9277bdd585e9a1e20170105-42982-1ppj8or.jpeg[0]' -auto-orient -resize "500x500^" -gravity center -crop '500x500+0+0' '/var/folders/5q/wgyxkpgn079c873btlws30r80000gn/T/ba1fe3ea2388fc0523287a9443bf6a6720170105-42982-k6wh4s'
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mProfile Exists (0.2ms)[0m  SELECT  1 AS one FROM "profiles" WHERE ("profiles"."id" IS NOT NULL) AND "profiles"."slug" = ? LIMIT 1  [["slug", "user"]]
+Command :: PATH=/usr/local/bin/:$PATH; file -b --mime '/var/folders/5q/wgyxkpgn079c873btlws30r80000gn/T/e8501262c1d4a5beb9277bdd585e9a1e20170105-42982-1tarqgx.jpeg'
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "profiles" ("first_name", "last_name", "school", "grade", "mailing_list", "avatar_file_name", "avatar_content_type", "avatar_file_size", "avatar_updated_at", "number_of_students", "learner_age_range", "user_id", "slug", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["first_name", "User"], ["last_name", "One"], ["school", "Elmdale"], ["grade", "6"], ["mailing_list", "f"], ["avatar_file_name", "thelma-and-louise.jpeg"], ["avatar_content_type", "image/jpeg"], ["avatar_file_size", 249025], ["avatar_updated_at", "2017-01-05 19:28:44.395928"], ["number_of_students", 10], ["learner_age_range", "10 - 12"], ["user_id", 1], ["slug", "user"], ["created_at", "2017-01-05 19:28:44.947735"], ["updated_at", "2017-01-05 19:28:44.947735"]]
+[paperclip] saving /profiles/avatars/000/000/001/original/thelma-and-louise.jpeg
+[AWS S3 404 0.563002 0 retries] put_object(:acl=>:public_read,:bucket_name=>"tcodeclubsdev",:content_length=>249025,:content_type=>"image/jpeg",:data=>Paperclip::UploadedFileAdapter: thelma-and-louise.jpeg,:key=>"profiles/avatars/000/000/001/original/thelma-and-louise.jpeg") AWS::S3::Errors::NoSuchBucket The specified bucket does not exist
+
+[AWS S3 200 0.678548 0 retries] create_bucket(:bucket_name=>"tcodeclubsdev")  
+
+[paperclip] saving /profiles/avatars/000/000/001/original/thelma-and-louise.jpeg
+[AWS S3 200 0.5932 0 retries] put_object(:acl=>:public_read,:bucket_name=>"tcodeclubsdev",:content_length=>249025,:content_type=>"image/jpeg",:data=>Paperclip::UploadedFileAdapter: thelma-and-louise.jpeg,:key=>"profiles/avatars/000/000/001/original/thelma-and-louise.jpeg")  
+
+[paperclip] saving /profiles/avatars/000/000/001/thumbnail/thelma-and-louise.jpeg
+[AWS S3 200 0.340538 0 retries] put_object(:acl=>:public_read,:bucket_name=>"tcodeclubsdev",:content_length=>7901,:content_type=>"image/jpeg",:data=>Paperclip::FileAdapter: ba1fe3ea2388fc0523287a9443bf6a6720170105-42982-1irrsp2,:key=>"profiles/avatars/000/000/001/thumbnail/thelma-and-louise.jpeg")  
+
+[paperclip] saving /profiles/avatars/000/000/001/header/thelma-and-louise.jpeg
+[AWS S3 200 0.277931 0 retries] put_object(:acl=>:public_read,:bucket_name=>"tcodeclubsdev",:content_length=>59235,:content_type=>"image/jpeg",:data=>Paperclip::FileAdapter: ba1fe3ea2388fc0523287a9443bf6a6720170105-42982-k6wh4s,:key=>"profiles/avatars/000/000/001/header/thelma-and-louise.jpeg")  
+
+  [1m[35m (1.6ms)[0m  commit transaction
+Redirected to http://localhost:3000/profiles/user
+Completed 302 Found in 3152ms (ActiveRecord: 3.8ms)
+
+
+Started GET "/profiles/user" for ::1 at 2017-01-05 14:28:47 -0500
+Processing by ProfilesController#show as HTML
+  Parameters: {"id"=>"user"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 1]]
+  [1m[35mProfile Load (0.3ms)[0m  SELECT  "profiles".* FROM "profiles" WHERE "profiles"."slug" = ?  ORDER BY "profiles"."id" ASC LIMIT 1  [["slug", "user"]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "profiles".* FROM "profiles" WHERE "profiles"."slug" = ?  ORDER BY "profiles"."id" ASC LIMIT 1[0m  [["slug", "user"]]
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mActsAsVotable::Vote Load (0.5ms)[0m  [1mSELECT "votes".* FROM "votes" WHERE "votes"."vote_flag" = ? AND "votes"."voter_id" = ? AND "votes"."voter_type" = ?[0m  [["vote_flag", "t"], ["voter_id", 1], ["voter_type", "User"]]
+  [1m[35mLesson Load (0.2ms)[0m  SELECT "lessons".* FROM "lessons" WHERE "lessons"."profile_id" = ?  [["profile_id", 1]]
+  Rendered profiles/show.html.erb within layouts/application (6.9ms)
+  [1m[36mProfile Load (0.2ms)[0m  [1mSELECT  "profiles".* FROM "profiles" WHERE "profiles"."user_id" = ? LIMIT 1[0m  [["user_id", 1]]
+Completed 200 OK in 680ms (Views: 593.5ms | ActiveRecord: 2.2ms)
+
+
+Started GET "/profiles/user" for ::1 at 2017-01-05 15:19:26 -0500
+Processing by ProfilesController#show as HTML
+  Parameters: {"id"=>"user"}
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 1]]
+  [1m[36mProfile Load (0.2ms)[0m  [1mSELECT  "profiles".* FROM "profiles" WHERE "profiles"."slug" = ?  ORDER BY "profiles"."id" ASC LIMIT 1[0m  [["slug", "user"]]
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "profiles".* FROM "profiles" WHERE "profiles"."slug" = ?  ORDER BY "profiles"."id" ASC LIMIT 1  [["slug", "user"]]
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35mActsAsVotable::Vote Load (0.6ms)[0m  SELECT "votes".* FROM "votes" WHERE "votes"."vote_flag" = ? AND "votes"."voter_id" = ? AND "votes"."voter_type" = ?  [["vote_flag", "t"], ["voter_id", 1], ["voter_type", "User"]]
+  [1m[36mLesson Load (0.3ms)[0m  [1mSELECT "lessons".* FROM "lessons" WHERE "lessons"."profile_id" = ?[0m  [["profile_id", 1]]
+  Rendered profiles/show.html.erb within layouts/application (4.3ms)
+  [1m[35mProfile Load (0.2ms)[0m  SELECT  "profiles".* FROM "profiles" WHERE "profiles"."user_id" = ? LIMIT 1  [["user_id", 1]]
+Completed 200 OK in 542ms (Views: 483.4ms | ActiveRecord: 2.9ms)
+
+
+Started GET "/lessons/new" for ::1 at 2017-01-05 15:19:31 -0500
+  [1m[36mActiveRecord::SchemaMigration Load (0.9ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by LessonsController#new as HTML
+  [1m[35mUser Load (0.2ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 1]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "bootsy_image_galleries" ("created_at", "updated_at") VALUES (?, ?)  [["created_at", "2017-01-05 20:19:31.638713"], ["updated_at", "2017-01-05 20:19:31.638713"]]
+  [1m[36m (1.1ms)[0m  [1mcommit transaction[0m
+  [1m[35mBootsy::ImageGallery Load (0.2ms)[0m  SELECT  "bootsy_image_galleries".* FROM "bootsy_image_galleries" WHERE "bootsy_image_galleries"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36m (0.2ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  UPDATE "bootsy_image_galleries" SET "bootsy_resource_type" = ?, "updated_at" = ? WHERE "bootsy_image_galleries"."id" = ?  [["bootsy_resource_type", "Lesson"], ["updated_at", "2017-01-05 20:19:31.652299"], ["id", 1]]
+  [1m[36m (1.3ms)[0m  [1mcommit transaction[0m
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (134.3ms)
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (2.0ms)
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (1.3ms)
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (1.3ms)
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (1.2ms)
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (1.4ms)
+DEPRECATION WARNING: input method now accepts a `wrapper_options` argument. The method definition without the argument is deprecated and will be removed in the next Simple Form version. Change your code from:
+
+    def input
+
+to
+
+    def input(wrapper_options)
+
+See https://github.com/plataformatec/simple_form/pull/997 for more information.
+ (called from block in _app_views_lessons__form_html_erb__1919459489413770336_70257898751340 at /Users/jordandeutsch/Documents/UA5/apps/codeclubs/app/views/lessons/_form.html.erb:81)
+DEPRECATION WARNING: input method now accepts a `wrapper_options` argument. The method definition without the argument is deprecated and will be removed in the next Simple Form version. Change your code from:
+
+    def input
+
+to
+
+    def input(wrapper_options)
+
+See https://github.com/plataformatec/simple_form/pull/997 for more information.
+ (called from block in _app_views_lessons__form_html_erb__1919459489413770336_70257898751340 at /Users/jordandeutsch/Documents/UA5/apps/codeclubs/app/views/lessons/_form.html.erb:83)
+DEPRECATION WARNING: input method now accepts a `wrapper_options` argument. The method definition without the argument is deprecated and will be removed in the next Simple Form version. Change your code from:
+
+    def input
+
+to
+
+    def input(wrapper_options)
+
+See https://github.com/plataformatec/simple_form/pull/997 for more information.
+ (called from block in _app_views_lessons__form_html_erb__1919459489413770336_70257898751340 at /Users/jordandeutsch/Documents/UA5/apps/codeclubs/app/views/lessons/_form.html.erb:85)
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (1.4ms)
+  [1m[35mProfile Load (0.1ms)[0m  SELECT  "profiles".* FROM "profiles" WHERE "profiles"."user_id" = ? LIMIT 1  [["user_id", 1]]
+  Rendered lessons/_form.html.erb (277.1ms)
+  Rendered lessons/new.html.erb within layouts/application (286.2ms)
+Completed 200 OK in 1119ms (Views: 983.8ms | ActiveRecord: 6.0ms)
+
+
+Started GET "/profiles/user" for ::1 at 2017-01-05 15:19:34 -0500
+Processing by ProfilesController#show as HTML
+  Parameters: {"id"=>"user"}
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 1]]
+  [1m[35mProfile Load (0.2ms)[0m  SELECT  "profiles".* FROM "profiles" WHERE "profiles"."slug" = ?  ORDER BY "profiles"."id" ASC LIMIT 1  [["slug", "user"]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "profiles".* FROM "profiles" WHERE "profiles"."slug" = ?  ORDER BY "profiles"."id" ASC LIMIT 1[0m  [["slug", "user"]]
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mActsAsVotable::Vote Load (0.1ms)[0m  [1mSELECT "votes".* FROM "votes" WHERE "votes"."vote_flag" = ? AND "votes"."voter_id" = ? AND "votes"."voter_type" = ?[0m  [["vote_flag", "t"], ["voter_id", 1], ["voter_type", "User"]]
+  [1m[35mLesson Load (0.3ms)[0m  SELECT "lessons".* FROM "lessons" WHERE "lessons"."profile_id" = ?  [["profile_id", 1]]
+  Rendered profiles/show.html.erb within layouts/application (5.3ms)
+  [1m[36mProfile Load (0.1ms)[0m  [1mSELECT  "profiles".* FROM "profiles" WHERE "profiles"."user_id" = ? LIMIT 1[0m  [["user_id", 1]]
+Completed 200 OK in 495ms (Views: 481.8ms | ActiveRecord: 1.3ms)
+
+
+Started GET "/lessons/new" for ::1 at 2017-01-05 15:19:38 -0500
+Processing by LessonsController#new as HTML
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 1]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "bootsy_image_galleries" ("created_at", "updated_at") VALUES (?, ?)  [["created_at", "2017-01-05 20:19:39.011890"], ["updated_at", "2017-01-05 20:19:39.011890"]]
+  [1m[36m (2.4ms)[0m  [1mcommit transaction[0m
+  [1m[35mBootsy::ImageGallery Load (0.1ms)[0m  SELECT  "bootsy_image_galleries".* FROM "bootsy_image_galleries" WHERE "bootsy_image_galleries"."id" = ? LIMIT 1  [["id", 2]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "bootsy_image_galleries" SET "bootsy_resource_type" = ?, "updated_at" = ? WHERE "bootsy_image_galleries"."id" = ?  [["bootsy_resource_type", "Lesson"], ["updated_at", "2017-01-05 20:19:39.019187"], ["id", 2]]
+  [1m[36m (1.2ms)[0m  [1mcommit transaction[0m
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (1.3ms)
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (1.2ms)
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (1.2ms)
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (1.0ms)
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (1.2ms)
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (1.1ms)
+DEPRECATION WARNING: input method now accepts a `wrapper_options` argument. The method definition without the argument is deprecated and will be removed in the next Simple Form version. Change your code from:
+
+    def input
+
+to
+
+    def input(wrapper_options)
+
+See https://github.com/plataformatec/simple_form/pull/997 for more information.
+ (called from block in _app_views_lessons__form_html_erb__1919459489413770336_70257898751340 at /Users/jordandeutsch/Documents/UA5/apps/codeclubs/app/views/lessons/_form.html.erb:81)
+DEPRECATION WARNING: input method now accepts a `wrapper_options` argument. The method definition without the argument is deprecated and will be removed in the next Simple Form version. Change your code from:
+
+    def input
+
+to
+
+    def input(wrapper_options)
+
+See https://github.com/plataformatec/simple_form/pull/997 for more information.
+ (called from block in _app_views_lessons__form_html_erb__1919459489413770336_70257898751340 at /Users/jordandeutsch/Documents/UA5/apps/codeclubs/app/views/lessons/_form.html.erb:83)
+DEPRECATION WARNING: input method now accepts a `wrapper_options` argument. The method definition without the argument is deprecated and will be removed in the next Simple Form version. Change your code from:
+
+    def input
+
+to
+
+    def input(wrapper_options)
+
+See https://github.com/plataformatec/simple_form/pull/997 for more information.
+ (called from block in _app_views_lessons__form_html_erb__1919459489413770336_70257898751340 at /Users/jordandeutsch/Documents/UA5/apps/codeclubs/app/views/lessons/_form.html.erb:85)
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (2.5ms)
+  [1m[35mProfile Load (0.1ms)[0m  SELECT  "profiles".* FROM "profiles" WHERE "profiles"."user_id" = ? LIMIT 1  [["user_id", 1]]
+  Rendered lessons/_form.html.erb (64.5ms)
+  Rendered lessons/new.html.erb within layouts/application (66.4ms)
+Completed 200 OK in 433ms (Views: 426.5ms | ActiveRecord: 4.5ms)
+
+
+Started GET "/profiles/user" for ::1 at 2017-01-05 15:19:42 -0500
+Processing by ProfilesController#show as HTML
+  Parameters: {"id"=>"user"}
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 1]]
+  [1m[35mProfile Load (0.1ms)[0m  SELECT  "profiles".* FROM "profiles" WHERE "profiles"."slug" = ?  ORDER BY "profiles"."id" ASC LIMIT 1  [["slug", "user"]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "profiles".* FROM "profiles" WHERE "profiles"."slug" = ?  ORDER BY "profiles"."id" ASC LIMIT 1[0m  [["slug", "user"]]
+  [1m[35mUser Load (0.2ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mActsAsVotable::Vote Load (0.1ms)[0m  [1mSELECT "votes".* FROM "votes" WHERE "votes"."vote_flag" = ? AND "votes"."voter_id" = ? AND "votes"."voter_type" = ?[0m  [["vote_flag", "t"], ["voter_id", 1], ["voter_type", "User"]]
+  [1m[35mLesson Load (0.1ms)[0m  SELECT "lessons".* FROM "lessons" WHERE "lessons"."profile_id" = ?  [["profile_id", 1]]
+  Rendered profiles/show.html.erb within layouts/application (2.7ms)
+  [1m[36mProfile Load (0.1ms)[0m  [1mSELECT  "profiles".* FROM "profiles" WHERE "profiles"."user_id" = ? LIMIT 1[0m  [["user_id", 1]]
+Completed 200 OK in 600ms (Views: 590.6ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/lessons/new" for ::1 at 2017-01-05 15:19:47 -0500
+Processing by LessonsController#new as HTML
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 1]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "bootsy_image_galleries" ("created_at", "updated_at") VALUES (?, ?)  [["created_at", "2017-01-05 20:19:47.031770"], ["updated_at", "2017-01-05 20:19:47.031770"]]
+  [1m[36m (2.8ms)[0m  [1mcommit transaction[0m
+  [1m[35mBootsy::ImageGallery Load (0.1ms)[0m  SELECT  "bootsy_image_galleries".* FROM "bootsy_image_galleries" WHERE "bootsy_image_galleries"."id" = ? LIMIT 1  [["id", 3]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "bootsy_image_galleries" SET "bootsy_resource_type" = ?, "updated_at" = ? WHERE "bootsy_image_galleries"."id" = ?  [["bootsy_resource_type", "Lesson"], ["updated_at", "2017-01-05 20:19:47.039830"], ["id", 3]]
+  [1m[36m (1.1ms)[0m  [1mcommit transaction[0m
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (1.4ms)
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (1.1ms)
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (1.2ms)
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (1.2ms)
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (1.3ms)
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (1.2ms)
+DEPRECATION WARNING: input method now accepts a `wrapper_options` argument. The method definition without the argument is deprecated and will be removed in the next Simple Form version. Change your code from:
+
+    def input
+
+to
+
+    def input(wrapper_options)
+
+See https://github.com/plataformatec/simple_form/pull/997 for more information.
+ (called from block in _app_views_lessons__form_html_erb__1919459489413770336_70257898751340 at /Users/jordandeutsch/Documents/UA5/apps/codeclubs/app/views/lessons/_form.html.erb:81)
+DEPRECATION WARNING: input method now accepts a `wrapper_options` argument. The method definition without the argument is deprecated and will be removed in the next Simple Form version. Change your code from:
+
+    def input
+
+to
+
+    def input(wrapper_options)
+
+See https://github.com/plataformatec/simple_form/pull/997 for more information.
+ (called from block in _app_views_lessons__form_html_erb__1919459489413770336_70257898751340 at /Users/jordandeutsch/Documents/UA5/apps/codeclubs/app/views/lessons/_form.html.erb:83)
+DEPRECATION WARNING: input method now accepts a `wrapper_options` argument. The method definition without the argument is deprecated and will be removed in the next Simple Form version. Change your code from:
+
+    def input
+
+to
+
+    def input(wrapper_options)
+
+See https://github.com/plataformatec/simple_form/pull/997 for more information.
+ (called from block in _app_views_lessons__form_html_erb__1919459489413770336_70257898751340 at /Users/jordandeutsch/Documents/UA5/apps/codeclubs/app/views/lessons/_form.html.erb:85)
+  Rendered /Users/jordandeutsch/.rvm/gems/ruby-2.3.3/gems/bootsy-2.2.1/app/views/bootsy/images/_modal.html.erb (1.4ms)
+  [1m[35mProfile Load (0.1ms)[0m  SELECT  "profiles".* FROM "profiles" WHERE "profiles"."user_id" = ? LIMIT 1  [["user_id", 1]]
+  Rendered lessons/_form.html.erb (65.3ms)
+  Rendered lessons/new.html.erb within layouts/application (66.7ms)
+Completed 200 OK in 452ms (Views: 444.9ms | ActiveRecord: 4.8ms)
